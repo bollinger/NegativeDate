@@ -50,3 +50,26 @@ Caused by: java.lang.IllegalArgumentException: Negative time
 	... 25 more
 
 ```
+
+
+## Update
+This looks to be related to 
+
+https://reproducible-builds.org/docs/source-date-epoch/
+
+and
+https://github.com/sbt/sbt/pull/5344/commits/1d0a41520071c2fcf694d6b68e4b5e7721f7c321
+
+which I think incorrectly uses
+```
+orElse(0L)
+``` 
+passing in 0 as the timestamp for jar files.
+
+
+###A workaround
+before starting sbt
+```
+export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
+```
+
